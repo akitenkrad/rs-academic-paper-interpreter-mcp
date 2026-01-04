@@ -20,10 +20,26 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
+# Get the actual user (not root)
+ACTUAL_USER="${SUDO_USER:-$USER}"
+ACTUAL_HOME=$(getent passwd "$ACTUAL_USER" | cut -d: -f6)
+
+# Find cargo binary
+CARGO_BIN="${ACTUAL_HOME}/.cargo/bin/cargo"
+if [[ ! -x "$CARGO_BIN" ]]; then
+    CARGO_BIN=$(which cargo 2>/dev/null || true)
+fi
+if [[ -z "$CARGO_BIN" || ! -x "$CARGO_BIN" ]]; then
+    echo "Error: cargo not found. Please install Rust first."
+    exit 1
+fi
+echo "Using cargo: $CARGO_BIN"
+echo ""
+
 # Build release binary
 echo "[1/5] Building release binary..."
 cd "$PROJECT_DIR"
-sudo -u "${SUDO_USER:-$USER}" cargo build --release
+sudo -u "$ACTUAL_USER" "$CARGO_BIN" build --release
 echo "Binary built: ${PROJECT_DIR}/target/release/${SERVICE_NAME}"
 echo ""
 
