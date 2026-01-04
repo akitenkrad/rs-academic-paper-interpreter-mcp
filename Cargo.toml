@@ -5,8 +5,12 @@ name = "app"
 publish.workspace = true
 version.workspace = true
 
-[[bin]]
+[lib]
 name = "app"
+path = "src/lib.rs"
+
+[[bin]]
+name = "academic-paper-interpreter-mcp"
 path = "src/bin/app.rs"
 
 [workspace]
@@ -14,24 +18,45 @@ members = ["shared"]
 
 [workspace.package]
 edition = "2024"
-license = "Apache-2.0"
+license = "MIT"
 publish = false
 version = "0.1.0"
 
 [workspace.dependencies]
+academic_paper_interpreter = { git = "https://github.com/akitenkrad/rs-academic-paper-interpreter.git" }
 anyhow = "1.0.100"
+axum = "0.8"
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4", features = ["derive"] }
 derive-new = "0.7.0"
 indicatif = "0.18.3"
+rmcp = { version = "0.1", features = ["server", "macros", "transport-io", "transport-sse-server"] }
+schemars = "0.8"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.145"
 shared = { path = "./shared" }
 strum = { version = "0.27.2", features = ["derive"] }
 test-log = { version = "0.2.19", features = ["trace"] }
+thiserror = "2.0.17"
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["rt"] }
 tracing = { version = "0.1.43", features = ["log"] }
 tracing-subscriber = { version = "0.3.22", features = ["env-filter", "json"] }
-thiserror = "2.0.17"
-
 [dependencies]
+academic_paper_interpreter = { workspace = true }
+anyhow = { workspace = true }
+axum = { workspace = true }
+chrono = { workspace = true }
+clap = { workspace = true }
+rmcp = { workspace = true }
+schemars = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
 shared = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+tokio-util = { workspace = true }
 tracing = { workspace = true }
+
+[dev-dependencies]
 test-log = { workspace = true }
