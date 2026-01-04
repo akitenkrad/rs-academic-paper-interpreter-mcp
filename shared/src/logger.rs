@@ -18,7 +18,9 @@ pub fn init_logger<T: AsRef<str>>(log_level: T) -> AppResult<()> {
     let subscriber = tracing_subscriber::fmt::layer()
         .with_file(true)
         .with_line_number(true)
-        .with_target(false);
+        .with_target(false)
+        .with_ansi(false)  // Disable ANSI colors for cleaner output
+        .with_writer(std::io::stderr);  // Write to stderr, not stdout (important for stdio transport)
     tracing_subscriber::registry()
         .with(subscriber)
         .with(env_filter)
