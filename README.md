@@ -186,7 +186,27 @@ Forwarding                    https://abc123.ngrok-free.app -> http://localhost:
    ```
 4. **Add** をクリック
 
-#### ngrok をバックグラウンドで実行
+#### ngrok をサービス化（推奨）
+
+systemd サービスとして永続的に実行できます：
+
+```bash
+# サービスをセットアップ
+sudo ./scripts/setup-ngrok-service.sh
+
+# 現在の URL を確認
+./scripts/ngrok-url.sh
+```
+
+**管理コマンド:**
+```bash
+sudo systemctl status ngrok-mcp   # 状態確認
+sudo systemctl restart ngrok-mcp  # 再起動（URL が変わります）
+sudo systemctl stop ngrok-mcp     # 停止
+sudo journalctl -u ngrok-mcp -f   # ログ確認
+```
+
+#### ngrok を手動でバックグラウンド実行
 
 ```bash
 # バックグラウンド実行
