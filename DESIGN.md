@@ -9,10 +9,10 @@
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     MCP Client                              │
-│              (Claude Desktop, Web App, etc.)                │
+│              (Claude Desktop, etc.)                         │
 └─────────────────────────┬───────────────────────────────────┘
                           │ MCP Protocol (JSON-RPC 2.0)
-                          │ Transport: stdio / SSE
+                          │ Transport: stdio
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                   MCP Server (rmcp)                         │
@@ -220,16 +220,7 @@ Claude Desktop等のCLIツールとの統合用。
 
 ```bash
 # 起動例
-./academic-paper-interpreter-mcp --transport stdio
-```
-
-### SSE (Server-Sent Events)
-
-Webアプリケーションとの統合用。
-
-```bash
-# 起動例
-./academic-paper-interpreter-mcp --transport sse --port 18080
+./academic-paper-interpreter-mcp
 ```
 
 ## モジュール構成
@@ -248,8 +239,7 @@ src/
 │   │   └── analyze.rs      # analyze_paper ツール
 │   └── transport/
 │       ├── mod.rs
-│       ├── stdio.rs        # stdio transport
-│       └── sse.rs          # SSE transport
+│       └── stdio.rs        # stdio transport
 ├── llm/
 │   ├── mod.rs              # LLMプロバイダー管理
 │   └── config.rs           # 設定解決ロジック
@@ -301,7 +291,7 @@ shared/
 ```toml
 [dependencies]
 # MCP
-rmcp = { version = "0.9", features = ["server", "transport-io", "transport-sse-server"] }
+rmcp = { version = "0.9", features = ["server", "transport-io"] }
 
 # 論文解析
 academic-paper-interpreter = { git = "..." }
